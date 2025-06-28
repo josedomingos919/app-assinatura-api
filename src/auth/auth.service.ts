@@ -1,18 +1,18 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
-import { SignupDto } from './dto';
-import { SigninDto } from './dto/signinDto';
-import { JwtService } from '@nestjs/jwt/dist';
-import { ConfigService } from '@nestjs/config';
+import { ForbiddenException, Injectable } from "@nestjs/common";
+import { PrismaService } from "../prisma/prisma.service";
+import { SignupDto } from "./dto";
+import { SigninDto } from "./dto/signinDto";
+import { JwtService } from "@nestjs/jwt/dist";
+import { ConfigService } from "@nestjs/config";
 
-import * as argon from 'argon2';
+import * as argon from "argon2";
 
 @Injectable()
 export class AuthService {
   constructor(
     private prisma: PrismaService,
     private jwt: JwtService,
-    private config: ConfigService,
+    private config: ConfigService
   ) {}
 
   async signup(dto: SignupDto) {
@@ -22,10 +22,10 @@ export class AuthService {
         data: {
           name: dto.name,
           password: password,
-          username: dto.username,
+          email: dto.username,
         },
       });
-      delete user?.password;
+      delete user?.email;
       return user;
     } catch (error) {
       throw new ForbiddenException({
@@ -39,26 +39,26 @@ export class AuthService {
     try {
       const user = await this.prisma.user.findUnique({
         where: {
-          username: dto.username,
+          email: dto.username,
         },
       });
 
       if (!user)
         throw new ForbiddenException({
-          message: 'credential incorrect',
+          message: "credential incorrect",
           status: false,
         });
 
-      const passwordMatches = await argon.verify(user.password, dto.password);
+      const passwordMatches = await argon.verify(user.email, dto.password);
 
       if (!passwordMatches)
         throw new ForbiddenException({
-          message: 'credential incorrect',
+          message: "credential incorrect",
           status: false,
         });
 
-      delete user.password;
-      const token = await this.getSignToken(user.id, user.username);
+      delete user.email;
+      const token = await this.getSignToken(user.id, user.email);
 
       return {
         user,
@@ -68,7 +68,7 @@ export class AuthService {
       throw new ForbiddenException({
         error,
         status: false,
-        message: 'unexpected error',
+        message: "unexpected error",
       });
     }
   }
@@ -80,8 +80,8 @@ export class AuthService {
     };
 
     return this.jwt.signAsync(payload, {
-      expiresIn: '15m',
-      secret: this.config.get('JWT_SECRET'),
+      expiresIn: "15m",
+      secret: this.config.get("JWT_SECRET"),
     });
   }
 }
