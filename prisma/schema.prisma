@@ -12,28 +12,22 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  name     String
-  username String @unique
-  password String
-
-  sentShares     Shared[] @relation(name: "UserSentRelation")
-  receivedShares Shared[] @relation(name: "UserReceiveRelation")
+  name  String
+  email String @unique
 
   @@map("user")
 }
 
-model Shared {
+model Signatures {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  userIdSent Int
-  userSent   User @relation(name: "UserSentRelation", fields: [userIdSent], references: [id])
+  img String
 
-  userReceiveId Int
-  userReceive   User @relation(name: "UserReceiveRelation", fields: [userReceiveId], references: [id])
+  name      String
+  bi        String @unique
+  signature String
 
-  info String
-
-  @@map("shared")
+  @@map("Signature")
 }
