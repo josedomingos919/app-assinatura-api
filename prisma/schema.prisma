@@ -1,0 +1,39 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name     String
+  username String @unique
+  password String
+
+  sentShares     Shared[] @relation(name: "UserSentRelation")
+  receivedShares Shared[] @relation(name: "UserReceiveRelation")
+
+  @@map("user")
+}
+
+model Shared {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userIdSent Int
+  userSent   User @relation(name: "UserSentRelation", fields: [userIdSent], references: [id])
+
+  userReceiveId Int
+  userReceive   User @relation(name: "UserReceiveRelation", fields: [userReceiveId], references: [id])
+
+  info String
+
+  @@map("shared")
+}
