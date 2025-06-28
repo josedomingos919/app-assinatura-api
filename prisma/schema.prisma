@@ -25,10 +25,9 @@ model Signatures {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  img       String
-  name      String
-  bi        String @unique
-  signature String
+  img  String
+  name String
+  bi   String @unique
 
   userId Int
   User   User @relation(fields: [userId], references: [id])

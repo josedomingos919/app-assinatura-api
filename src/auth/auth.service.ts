@@ -39,7 +39,7 @@ export class AuthService {
     try {
       const user = await this.prisma.user.findUnique({
         where: {
-          email: dto.username,
+          email: dto.email,
         },
       });
 
@@ -49,7 +49,7 @@ export class AuthService {
           status: false,
         });
 
-      const passwordMatches = await argon.verify(user.email, dto.password);
+      const passwordMatches = await argon.verify(user.password, dto.password);
 
       if (!passwordMatches)
         throw new ForbiddenException({
