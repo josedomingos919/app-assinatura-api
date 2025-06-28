@@ -22,7 +22,7 @@ export class AuthService {
         data: {
           name: dto.name,
           password: password,
-          email: dto.username,
+          email: dto.email,
         },
       });
       delete user?.email;
