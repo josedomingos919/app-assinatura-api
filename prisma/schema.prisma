@@ -12,9 +12,10 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  name     String
-  password String
-  email    String @unique
+  name       String
+  password   String
+  email      String       @unique
+  Signatures Signatures[]
 
   @@map("user")
 }
@@ -24,11 +25,13 @@ model Signatures {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  img String
-
+  img       String
   name      String
   bi        String @unique
   signature String
+
+  userId Int
+  User   User @relation(fields: [userId], references: [id])
 
   @@map("Signature")
 }
