@@ -8,7 +8,7 @@ import { HttpService } from "@nestjs/axios";
 import { firstValueFrom } from "rxjs";
 import { HttpStatusCode } from "axios";
 import { UpdateUserDTO } from "./dto/updateUserDTO";
-
+import * as argon from "argon2";
 @Injectable()
 export class UserService {
   constructor(
@@ -73,6 +73,13 @@ export class UserService {
 
   async update(dto: UpdateUserDTO) {
     try {
+      if (!dto?.password) {
+        delete dto?.password;
+      } else {
+        const password = await argon.hash(dto.password);
+        dto.password = password;
+      }
+
       const response = await this.prisma.user.update({
         data: dto,
         where: {
