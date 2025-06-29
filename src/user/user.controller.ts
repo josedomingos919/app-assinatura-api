@@ -1,3 +1,4 @@
+import { CompareImageDTO } from "./dto/compareImageDTO";
 import { CreateSignatureDTO } from "./dto/createSignatureDto";
 import { UserService } from "./user.service";
 import {
@@ -33,5 +34,10 @@ export class UserController {
   @Delete("signatures/:id")
   removeSignature(@Param("id", ParseIntPipe) id: number) {
     return this.userService.removeSignature(id);
+  }
+
+  @Post("compare")
+  compare(@Body() dto: CompareImageDTO) {
+    return this.userService.compare(dto);
   }
 }
