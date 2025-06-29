@@ -25,7 +25,7 @@ model Signatures {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  img  String
+  img  String @db.LongText
   name String
   bi   String
 
