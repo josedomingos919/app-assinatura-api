@@ -7,6 +7,7 @@ import { CompareImageDTO } from "./dto/compareImageDTO";
 import { HttpService } from "@nestjs/axios";
 import { firstValueFrom } from "rxjs";
 import { HttpStatusCode } from "axios";
+import { UpdateUserDTO } from "./dto/updateUserDTO";
 
 @Injectable()
 export class UserService {
@@ -67,6 +68,21 @@ export class UserService {
     } catch (error) {
       console.error("Erro ao chamar API externa:", error);
       throw error;
+    }
+  }
+
+  async update(dto: UpdateUserDTO) {
+    try {
+      const response = await this.prisma.user.update({
+        data: dto,
+        where: {
+          id: dto.id,
+        },
+      });
+
+      return response;
+    } catch (error) {
+      throw new ForbiddenException({ error });
     }
   }
 }

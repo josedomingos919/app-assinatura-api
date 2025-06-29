@@ -1,5 +1,6 @@
 import { CompareImageDTO } from "./dto/compareImageDTO";
 import { CreateSignatureDTO } from "./dto/createSignatureDto";
+import { UpdateUserDTO } from "./dto/updateUserDTO";
 import { UserService } from "./user.service";
 import {
   Body,
@@ -9,6 +10,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Put,
   Query,
 } from "@nestjs/common";
 
@@ -39,5 +41,10 @@ export class UserController {
   @Post("compare")
   compare(@Body() dto: CompareImageDTO) {
     return this.userService.compare(dto);
+  }
+
+  @Put("update")
+  update(@Body() dto: UpdateUserDTO) {
+    return this.userService.update(dto);
   }
 }

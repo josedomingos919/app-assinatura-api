@@ -25,7 +25,7 @@ export class AuthService {
           email: dto.email,
         },
       });
-      delete user?.email;
+
       return user;
     } catch (error) {
       throw new ForbiddenException({
@@ -57,7 +57,6 @@ export class AuthService {
           status: false,
         });
 
-      delete user.email;
       const token = await this.getSignToken(user.id, user.email);
 
       return {
