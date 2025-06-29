@@ -27,10 +27,11 @@ model Signatures {
 
   img  String
   name String
-  bi   String @unique
+  bi   String
 
   userId Int
   User   User @relation(fields: [userId], references: [id])
 
+  @@unique([bi, userId])
   @@map("Signature")
 }
