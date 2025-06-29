@@ -3,6 +3,7 @@ import { UserService } from "./user.service";
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -29,7 +30,7 @@ export class UserController {
     return this.userService.crateSignature(dto);
   }
 
-  @Post("signatures/:id")
+  @Delete("signatures/:id")
   removeSignature(@Param("id", ParseIntPipe) id: number) {
     return this.userService.removeSignature(id);
   }
